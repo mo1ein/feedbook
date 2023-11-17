@@ -59,7 +59,7 @@ def generate_jwt_token(
     payload = {
         "iat": current_time,
         "jti": str(uuid.uuid4()),
-        "sub": identity,
+        "user_id": identity,
         "type": token_type,
         "nbf": current_time,
         "exp": current_time + lifetime
@@ -101,4 +101,4 @@ def decode_jwt_token(
 
 def get_jwt_identity(jwt_token: str) -> str:
     decoded_token = decode_jwt_token(jwt_token)
-    return decoded_token.get("sub")
+    return decoded_token.get("user_id")

@@ -1,7 +1,11 @@
+from uuid import UUID
+
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 from pydantic import BaseModel, StrictStr, EmailStr, SecretStr, field_validator, ConfigDict
 import re
 
+
+# move config to a base class
 
 class LoginInputModel(BaseModel):
     model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
@@ -59,3 +63,11 @@ class Token(BaseModel):
     access_token: StrictStr
     refresh_token: StrictStr
     token_type: StrictStr
+
+
+class VerifyAccessTokenInputModel(BaseModel):
+    access_token: StrictStr
+
+
+class VerifyAccessTokenOutputModel(BaseModel):
+    user_id: UUID
