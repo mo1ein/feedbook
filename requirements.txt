@@ -3,3 +3,5 @@ pyjwt
 sqlalchemy
 psycopg
 passlib
+feedparser
+asyncio
