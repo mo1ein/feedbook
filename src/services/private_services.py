@@ -1,38 +1,64 @@
-
-from src.logics.auth import AuthLogic
-from src.models.auth_model import RegisterOutputModel, LoginOutputModel, RegisterInputModel, LoginInputModel
 from fastapi import status, APIRouter
 
+from src.logics.feed import FeedLogic
+from src.models.feed_model import GetUserFeedsModel, GetUserSourcesModel, SourceModel
+from src.models.user_model import UserModel
+
+private_routes = APIRouter()
 
 
-routes = APIRouter()
+# @private_routes.get(
+#     "/users/{user_id}/feeds",
+#     response_model=...,
+#     # fix this
+#     tags=["FEED_API"],
+#     status_code=status.HTTP_201_CREATED
+# )
+# def get_user_feeds(input_model: UserModel) -> GetUserFeedsModel:
+#     return FeedLogic()
+#
+#
+# @private_routes.get(
+#     "/users/{user_id}/bookmarks",
+#     response_model=...,
+#     # fix this
+#     tags=["FEED_API"],
+#     status_code=status.HTTP_201_CREATED
+# )
+# def get_user_bookmarks(input_model: UserModel) -> list:
+#     return FeedLogic().register(input_model)
+#
+#
+# @private_routes.post(
+#     "/users/{user_id}/bookmark",
+#     response_model=...,
+#     # fix this
+#     tags=["FEED_API"],
+#     status_code=status.HTTP_201_CREATED
+# )
+# def bookmark_feed(input_model: UserModel) -> list:
+#     return FeedLogic()
 
 
-# TODO: better route
-@routes.post(
-    "/auth/register",
-    response_model=RegisterOutputModel,
+@private_routes.get(
+    "/users/{user_id}/sources",
+    response_model=GetUserSourcesModel,
     # fix this
-    tags=["AUTH_API"],
-    status_code=status.HTTP_201_CREATED
-)
-# TODO: this should be async or not?
-def register(input_model: RegisterInputModel) -> RegisterOutputModel:
-    """Register user and create JWT access and refresh tokens"""
-    return AuthLogic().register(input_model)
-
-
-# TODO: better route
-@routes.post(
-    "/auth/login",
-    response_model=LoginOutputModel,
-    # fix this
-    tags=["AUTH_API"],
-    # its true??
+    tags=["FEED_API"],
     status_code=status.HTTP_200_OK
 )
-def login(input_model: LoginInputModel) -> LoginOutputModel:
-    return AuthLogic().login(input_model)
+def get_user_sources(user_id: str) -> GetUserSourcesModel:
+    user_model = UserModel(user_id=user_id)
+    return FeedLogic().get_user_sources(user_model)
 
 
-# TODO: refresh_token
+@private_routes.post(
+    "/users/{user_id}/sources",
+    response_model=SourceModel,
+    # fix this
+    tags=["FEED_API"],
+    status_code=status.HTTP_200_OK
+)
+def add_user_source(user_id:str, url: str) -> None:
+    source_model = SourceModel(user_id=user_id, link=url)
+    FeedLogic().add_user_source(source_model)
