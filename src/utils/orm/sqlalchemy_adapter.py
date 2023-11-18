@@ -3,7 +3,7 @@ from uuid import UUID
 
 from sqlalchemy import Executable
 
-from src.models.entities import UserEntity
+from src.models.entities import UserEntity, BaseEntity
 from src.utils.exceptions import InvalidEntityTypeException
 from src.utils.orm.session_manager import SessionManager
 from src.utils.orm.sqlalchemy_port import SqlAlchemyPort, AnyExecuteParams
@@ -14,8 +14,8 @@ class BaseSqlAlchemyAdapter(SqlAlchemyPort):
         raise NotImplementedError
 
     def create(self, entity, return_data: bool = False):
-        if not isinstance(entity, UserEntity):
-            raise InvalidEntityTypeException(entity, UserEntity)
+        if not isinstance(entity, BaseEntity):
+            raise InvalidEntityTypeException(entity, BaseEntity)
         session = self.get_session()
         session.add(entity)
         if return_data:
@@ -30,20 +30,20 @@ class BaseSqlAlchemyAdapter(SqlAlchemyPort):
             return entities
 
     def get_by_uuid(self, entity_type: Type, entity_uuid: UUID):
-        if not issubclass(entity_type, UserEntity):
-            raise InvalidEntityTypeException(entity_type, UserEntity)
+        if not issubclass(entity_type, BaseEntity):
+            raise InvalidEntityTypeException(entity_type, BaseEntity)
         if not isinstance(entity_uuid, UUID):
             raise InvalidEntityTypeException(entity_uuid, UUID)
         session = self.get_session()
         return session.get(entity_type, entity_uuid)
 
-    def delete(self, entity: UserEntity) -> None:
+    def delete(self, entity: BaseEntity) -> None:
         if not isinstance(entity, UserEntity):
-            raise InvalidEntityTypeException(entity, UserEntity)
+            raise InvalidEntityTypeException(entity, BaseEntity)
         session = self.get_session()
         session.delete(entity)
 
-    def bulk_delete(self, entities: list[UserEntity]) -> None:
+    def bulk_delete(self, entities: list[BaseEntity]) -> None:
         for entity in entities:
             self.delete(entity)
 
