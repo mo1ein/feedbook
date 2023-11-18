@@ -1,50 +1,29 @@
 from fastapi import status, APIRouter
 
 from src.logics.feed import FeedLogic
-from src.models.feed_model import GetUserFeedsModel, GetUserSourcesModel, SourceModel
+from src.models.feed_model import GetUserFeedsModel, GetUserSourcesModel, SourceModel, BookmarkModel, \
+    GetUserBookmarksModel
+from src.models.service_enum import ServiceType
 from src.models.user_model import UserModel
 
 private_routes = APIRouter()
 
 
-# @private_routes.get(
-#     "/users/{user_id}/feeds",
-#     response_model=...,
-#     # fix this
-#     tags=["FEED_API"],
-#     status_code=status.HTTP_201_CREATED
-# )
-# def get_user_feeds(input_model: UserModel) -> GetUserFeedsModel:
-#     return FeedLogic()
-#
-#
-# @private_routes.get(
-#     "/users/{user_id}/bookmarks",
-#     response_model=...,
-#     # fix this
-#     tags=["FEED_API"],
-#     status_code=status.HTTP_201_CREATED
-# )
-# def get_user_bookmarks(input_model: UserModel) -> list:
-#     return FeedLogic().register(input_model)
-#
-#
-# @private_routes.post(
-#     "/users/{user_id}/bookmark",
-#     response_model=...,
-#     # fix this
-#     tags=["FEED_API"],
-#     status_code=status.HTTP_201_CREATED
-# )
-# def bookmark_feed(input_model: UserModel) -> list:
-#     return FeedLogic()
+@private_routes.get(
+    "/users/{user_id}/feeds",
+    response_model=GetUserFeedsModel,
+    tags=[ServiceType.FEED_API],
+    status_code=status.HTTP_200_OK
+)
+def get_user_feeds(user_id: str) -> GetUserFeedsModel:
+    user_model = UserModel(user_id=user_id)
+    return FeedLogic().get_user_feeds(user_model)
 
 
 @private_routes.get(
     "/users/{user_id}/sources",
     response_model=GetUserSourcesModel,
-    # fix this
-    tags=["FEED_API"],
+    tags=[ServiceType.FEED_API],
     status_code=status.HTTP_200_OK
 )
 def get_user_sources(user_id: str) -> GetUserSourcesModel:
@@ -55,10 +34,31 @@ def get_user_sources(user_id: str) -> GetUserSourcesModel:
 @private_routes.post(
     "/users/{user_id}/sources",
     response_model=SourceModel,
-    # fix this
-    tags=["FEED_API"],
+    tags=[ServiceType.FEED_API],
+    status_code=status.HTTP_201_CREATED
+)
+def add_user_source(user_id: str, url: str) -> SourceModel:
+    source_model = SourceModel(user_id=user_id, link=url)
+    return FeedLogic().add_user_source(source_model)
+
+
+@private_routes.get(
+    "/users/{user_id}/bookmarks",
+    response_model=GetUserFeedsModel,
+    tags=[ServiceType.FEED_API],
     status_code=status.HTTP_200_OK
 )
-def add_user_source(user_id:str, url: str) -> None:
-    source_model = SourceModel(user_id=user_id, link=url)
-    FeedLogic().add_user_source(source_model)
+def get_user_bookmarks(user_id: str) -> GetUserFeedsModel:
+    user_model = UserModel(user_id=user_id)
+    return FeedLogic().get_user_bookmarks(user_model)
+
+
+@private_routes.post(
+    "/users/{user_id}/bookmark",
+    response_model=dict,
+    tags=[ServiceType.FEED_API],
+    status_code=status.HTTP_201_CREATED
+)
+def bookmark_feed(user_id: str, feed_id: str) -> dict:
+    bookmark_model = BookmarkModel(user_id=user_id, feed_id=feed_id)
+    return FeedLogic().bookmark_feed(bookmark_model)
