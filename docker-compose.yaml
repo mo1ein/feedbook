@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  feedbook_serve:
+    build: .
+#    container_name: feedbook
+    command: python -m main
+    restart: always
+    ports:
+      - '8500:8500'
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5433:5433'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
