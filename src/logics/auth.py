@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from fastapi import HTTPException, status
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 
@@ -21,7 +19,7 @@ class AuthLogic:
     # TODO: add atomic
     def login(self, input_model: LoginInputModel) -> LoginOutputModel:
         user_model = UserModel(email=input_model.email)
-        user_data = self.repository.get_user(user_model)
+        user_data = self.repository.get_user_by_email(user_model)
         # TODO: check user is active???
         if not user_data:
             # fix this error
@@ -29,7 +27,6 @@ class AuthLogic:
         if not pbkdf2_sha256.verify(input_model.password.get_secret_value(), user_data.password):
             # fix this error
             raise ValueError("your email or password is not correct")
-        # send user id to jwt...
         access_token = token.generate_jwt_token(
             identity=str(user_data.user_id),
             token_type="access",
@@ -53,13 +50,12 @@ class AuthLogic:
             refresh_token=refresh_token,
         )
 
-    # TODO: this must be atomic
     @atomic
     def register(self, input_model: RegisterInputModel) -> RegisterOutputModel:
         # forwarded_for, user_agent = get_auth_headers()
 
         user_model = UserModel(email=input_model.email, password=input_model.password)
-        user = self.repository.get_user(user_model)
+        user = self.repository.get_user_by_email(user_model)
         if user:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='User already exists')
         user_model.is_active = True
