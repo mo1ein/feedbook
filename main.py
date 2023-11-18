@@ -36,7 +36,7 @@ def validate_customer_authentication(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid Authentication Credentials",
         ) from exception
-    if user_id := request.path_params.get('usesr_id'):
+    if user_id := request.path_params.get('user_id'):
         if user_id != str(response.user_id):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -80,12 +80,15 @@ def _create_app():
 
 def serve():
     app = _create_app()
-    # add uvicorn configs...
-    uvicorn.run(app, port=9000)
+    uvicorn.run(
+        app,
+        host=BaseFastAPIConfig.FASTAPI_SERVE_HOST,
+        port=BaseFastAPIConfig.FASTAPI_SERVE_PORT,
+    )
 
 
 if __name__ == '__main__':
-    from src.utils.configs import Configuration
+    from src.utils.configs import Configuration, BaseFastAPIConfig
 
     # fix dotenv...
     # Configuration.apply(RuntimeConfig, alternative_env_search_dir=__file__)
