@@ -1,22 +1,24 @@
 version: '3.8'
 services:
-  feedbook_serve:
+  serve:
     build: .
-#    container_name: feedbook
+    container_name: feedbook
     command: python -m main
-    restart: always
     ports:
       - '8500:8500'
+    restart: always
   db:
     image: postgres
+    container_name: feedbook_db
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5433:5433'
-    volumes: 
+      # need this??
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
       - db:/var/lib/postgresql/data
+      - ./db/init_data.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   db:
     driver: local
