@@ -9,29 +9,30 @@ CREATE TABLE users
 
 CREATE TABLE source
 (
-    source_id  UUID                                    DEFAULT gen_random_uuid() primary key NOT NULL,
-    user_id    UUID                           NOT NULL,
-    link       VARCHAR                        NOT NULL,
-    created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL DEFAULT transaction_timestamp()
+    source_id  UUID                                     DEFAULT gen_random_uuid() primary key NOT NULL,
+    user_id    UUID REFERENCES users (user_id) NOT NULL,
+    link       VARCHAR                         NOT NULL,
+    created_at TIMESTAMP(6) WITHOUT TIME ZONE  NOT NULL DEFAULT transaction_timestamp()
 );
 
 CREATE TABLE feed
 (
-    feed_id    UUID                                    DEFAULT gen_random_uuid() primary key,
-    title      VARCHAR                        NOT NULL,
-    link       VARCHAR                        NOT NULL,
-    summary    VARCHAR                        NOT NULL,
-    author     VARCHAR                        NOT NULL,
+    feed_id    UUID                                     DEFAULT gen_random_uuid() primary key,
+    user_id    UUID REFERENCES users (user_id) NOT NULL,
+    title      VARCHAR                         NOT NULL,
+    link       VARCHAR                         NOT NULL,
+    summary    VARCHAR                         NOT NULL,
+    author     VARCHAR                         NOT NULL,
 -- published type can be datetime or sth...
-    published  VARCHAR                        NOT NULL,
-    created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL DEFAULT transaction_timestamp()
+    published  VARCHAR                         NOT NULL,
+    created_at TIMESTAMP(6) WITHOUT TIME ZONE  NOT NULL DEFAULT transaction_timestamp()
 );
 
 CREATE TABLE bookmark
 (
-    bookmark_id UUID                                    DEFAULT gen_random_uuid() primary key,
-    feed_id     UUID                           NOT NULL,
-    user_id     UUID                           NOT NULL,
-    created_at  TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL DEFAULT transaction_timestamp(),
+    bookmark_id UUID                                     DEFAULT gen_random_uuid() primary key,
+    feed_id     UUID REFERENCES feed (feed_id)  NOT NULL,
+    user_id     UUID REFERENCES users (user_id) NOT NULL,
+    created_at  TIMESTAMP(6) WITHOUT TIME ZONE  NOT NULL DEFAULT transaction_timestamp(),
     updated_at  TIMESTAMP(6) WITHOUT TIME ZONE
 );
