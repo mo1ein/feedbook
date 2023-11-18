@@ -13,7 +13,7 @@ class BaseOrmConfig:
     ORM_ENABLE_FROM_LINTING: bool = True
     ORM_HIDE_PARAMETERS: bool = False
     #fix
-    ORM_HOST: str = "localhost"
+    ORM_HOST: str = "feedbook_db"
     ORM_ISOLATION_LEVEL: str = "SERIALIZABLE"
     #fix
     ORM_PASSWORD: str = "postgres"
@@ -40,8 +40,8 @@ class BaseFastAPIConfig:
     FASTAPI_PROXY_HEADERS: bool = True
     FASTAPI_RELOAD: bool = False
     FASTAPI_SERVER_HEADER: bool = True
-    FASTAPI_SERVE_HOST: str = "127.0.0.1"
-    FASTAPI_SERVE_PORT: int = 8100
+    FASTAPI_SERVE_HOST: str = "0.0.0.0"
+    FASTAPI_SERVE_PORT: int = 8500
     FASTAPI_TIMEOUT_GRACEFUL_SHUTDOWN: int = None
     FASTAPI_TIMEOUT_KEEP_ALIVE: int = 5
     FASTAPI_WS_MAX_SIZE: int = 16777216
