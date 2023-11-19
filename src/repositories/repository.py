@@ -33,10 +33,13 @@ class Repository:
         ...
 
     def get_feed(self, input_model) -> FeedModel:
-        return self.postgres_adapter.get_feed(input_model)
+        return self.postgres_adapter.get_feed_by_id(input_model)
 
     def get_bookmark(self, input_model) -> BookmarkModel:
         return self.postgres_adapter.get_bookmark(input_model)
 
     def create_feed(self, input_model: FeedModel) -> FeedModel:
         return self.postgres_adapter.create_feed(input_model)
+
+    def is_exist_feed(self, input_model: FeedModel) -> FeedModel | None:
+        return self.postgres_adapter.is_exist_feed(input_model)
