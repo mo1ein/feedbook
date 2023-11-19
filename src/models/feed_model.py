@@ -1,24 +1,22 @@
 from uuid import UUID
 
-from pydantic import BaseModel, PastDatetime, ConfigDict, StrictStr
+from pydantic import PastDatetime, StrictStr
+
+from src.models.base_model import BaseFeedBookModel
 
 
-class SourceModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
+class SourceModel(BaseFeedBookModel):
     source_id: UUID | None = None
     user_id: UUID | None = None
     link: StrictStr | None = None
     created_at: PastDatetime | None = None
 
 
-class GetUserSourcesModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
+class GetUserSourcesModel(BaseFeedBookModel):
     user_sources: list[SourceModel]
 
 
-class FeedModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
+class FeedModel(BaseFeedBookModel):
     feed_id: UUID | None = None
     user_id: UUID | None = None
     title: StrictStr | None = None
@@ -29,23 +27,17 @@ class FeedModel(BaseModel):
     created_at: PastDatetime | None = None
 
 
-class GetUserFeedsModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
+class GetUserFeedsModel(BaseFeedBookModel):
     user_feeds: list[FeedModel]
 
 
-class BookmarkModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
+class BookmarkModel(BaseFeedBookModel):
     bookmark_id: UUID | None = None
     feed_id: UUID | None = None
     user_id: UUID | None = None
     created_at: PastDatetime | None = None
     updated_at: PastDatetime | None = None
 
-class GetUserBookmarksModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
 
+class GetUserBookmarksModel(BaseFeedBookModel):
     user_bookmarks: list[BookmarkModel]
-
-

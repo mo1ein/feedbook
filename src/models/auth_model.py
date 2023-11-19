@@ -4,25 +4,20 @@ from passlib.handlers.pbkdf2 import pbkdf2_sha256
 from pydantic import BaseModel, StrictStr, EmailStr, SecretStr, field_validator, ConfigDict
 import re
 
+from src.models.base_model import BaseFeedBookModel
 
-# move config to a base class
 
-class LoginInputModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
+class LoginInputModel(BaseFeedBookModel):
     email: EmailStr  # TODO: can be username
     password: SecretStr
 
 
-class LoginOutputModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
+class LoginOutputModel(BaseFeedBookModel):
     access_token: StrictStr
     refresh_token: StrictStr
 
 
-class RegisterInputModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
+class RegisterInputModel(BaseFeedBookModel):
     email: EmailStr
     password: SecretStr
 
@@ -50,24 +45,14 @@ class RegisterInputModel(BaseModel):
         return pbkdf2_sha256.hash(password)
 
 
-class RegisterOutputModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
+class RegisterOutputModel(BaseFeedBookModel):
     access_token: StrictStr
     refresh_token: StrictStr
 
 
-class Token(BaseModel):
-    model_config = ConfigDict(extra="forbid", validate_default=True, from_attributes=True, validate_assignment=True)
-
-    access_token: StrictStr
-    refresh_token: StrictStr
-    token_type: StrictStr
-
-
-class VerifyAccessTokenInputModel(BaseModel):
+class VerifyAccessTokenInputModel(BaseFeedBookModel):
     access_token: StrictStr
 
 
-class VerifyAccessTokenOutputModel(BaseModel):
+class VerifyAccessTokenOutputModel(BaseFeedBookModel):
     user_id: UUID
