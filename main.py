@@ -1,4 +1,6 @@
 import uvicorn
+
+from src.configs.runtime_config import RuntimeConfig
 from src.logics.auth import AuthLogic
 from src.models.auth_model import VerifyAccessTokenInputModel
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -91,5 +93,5 @@ if __name__ == '__main__':
     from src.utils.configs import Configuration, BaseFastAPIConfig
 
     # fix dotenv...
-    # Configuration.apply(RuntimeConfig, alternative_env_search_dir=__file__)
+    Configuration.apply(RuntimeConfig, alternative_env_search_dir=__file__)
     serve()
