@@ -46,11 +46,25 @@ class PostgresAdapter(SqlAlchemyAdapter):
         feed_entity = self.create(feed, return_data=True)
         return FeedModel.model_validate(feed_entity)
 
-    def get_feed(self, input_model) -> FeedModel | None:
+    def get_feed_by_id(self, input_model: UserModel) -> FeedModel | None:
         query = select(FeedEntity).where(
             and_(
                 FeedEntity.feed_id == input_model.feed_id,
                 FeedEntity.user_id == input_model.user_id
+            )
+        )
+        if (feed_entity := self.execute(query).scalar()) is None:
+            return None
+        return FeedModel.model_validate(feed_entity)
+
+    def is_exist_feed(self, input_model: FeedModel) -> FeedModel | None:
+        query = select(FeedEntity).where(
+            and_(
+                FeedEntity.title == input_model.title,
+                FeedEntity.link == input_model.link,
+                FeedEntity.summary == input_model.summary,
+                FeedEntity.author == input_model.author,
+                FeedEntity.published == input_model.published
             )
         )
         if (feed_entity := self.execute(query).scalar()) is None:
