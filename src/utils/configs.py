@@ -13,8 +13,8 @@ class BaseOrmConfig:
     ORM_ENABLE_FROM_LINTING: bool = True
     ORM_HIDE_PARAMETERS: bool = False
     #fix
-    # ORM_HOST: str = "feedbook_db"
-    ORM_HOST: str = "localhost"
+    ORM_HOST: str = "feedbook_db"
+    # ORM_HOST: str = "localhost"
     ORM_ISOLATION_LEVEL: str = "SERIALIZABLE"
     #fix
     ORM_PASSWORD: str = "postgres"
