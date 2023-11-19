@@ -6,8 +6,6 @@ from sqlalchemy import Column, String, DateTime, UUID, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, DeclarativeBase, relationship
 
 
-# fix all type hints
-
 class BaseEntity(DeclarativeBase):
     created_at: Mapped[datetime] = Column(DateTime(), server_default="DEFAULT", nullable=False)
 
@@ -52,6 +50,8 @@ class BookmarkEntity(BaseEntity):
 class UserEntity(BaseEntity):
     __tablename__ = "users"
     user_id: Mapped[uuid.UUID] = Column(UUID(as_uuid=True), primary_key=True, server_default="DEFAULT")
+    name = Column(String(), nullable=False)
+    last_name = Column(String(), nullable=False)
     email = Column(String(), unique=True, nullable=False)
     password = Column(String(), nullable=False)
     is_active = Column(Boolean(), nullable=False)

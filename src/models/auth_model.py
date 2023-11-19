@@ -1,14 +1,14 @@
 from uuid import UUID
 
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
-from pydantic import BaseModel, StrictStr, EmailStr, SecretStr, field_validator, ConfigDict
+from pydantic import StrictStr, EmailStr, SecretStr, field_validator
 import re
 
 from src.models.base_model import BaseFeedBookModel
 
 
 class LoginInputModel(BaseFeedBookModel):
-    email: EmailStr  # TODO: can be username
+    email: EmailStr
     password: SecretStr
 
 
@@ -18,6 +18,8 @@ class LoginOutputModel(BaseFeedBookModel):
 
 
 class RegisterInputModel(BaseFeedBookModel):
+    name: StrictStr
+    last_name: StrictStr
     email: EmailStr
     password: SecretStr
 
