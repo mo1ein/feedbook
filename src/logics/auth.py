@@ -16,17 +16,16 @@ class AuthLogic:
     def __init__(self) -> None:
         self.repository = Repository()
 
-    # TODO: add atomic
+    @atomic
     def login(self, input_model: LoginInputModel) -> LoginOutputModel:
         user_model = UserModel(email=input_model.email)
         user_data = self.repository.get_user_by_email(user_model)
-        # TODO: check user is active???
+
         if not user_data:
-            # fix this error
-            raise ValueError("your email or password is not correct")
+            raise HTTPException(status_code=401, detail="your email or password is not correct")
         if not pbkdf2_sha256.verify(input_model.password.get_secret_value(), user_data.password):
-            # fix this error
-            raise ValueError("your email or password is not correct")
+            raise HTTPException(status_code=401, detail="your email or password is not correct")
+
         access_token = token.generate_jwt_token(
             identity=str(user_data.user_id),
             token_type="access",
