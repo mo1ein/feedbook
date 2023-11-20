@@ -1,14 +1,16 @@
 import feedparser
 from fastapi import HTTPException
 
-from src.configs.runtime_config import RuntimeConfig
-from src.models.feed_model import GetUserSourcesModel, SourceModel, FeedModel, GetUserFeedsModel, BookmarkModel, \
-    GetUserBookmarksModel
+from src.models.feed_model import (
+    GetUserSourcesModel,
+    SourceModel,
+    FeedModel,
+    GetUserFeedsModel,
+    BookmarkModel
+)
 from src.models.user_model import UserModel
 from src.repositories.repository import Repository
 import asyncio
-
-from src.utils.configs import Configuration
 from src.utils.decorators.atomic import atomic
 
 
@@ -34,11 +36,11 @@ class FeedLogic:
         return results
 
     @atomic
-    def get_user_feeds(self, input_model: UserModel) -> GetUserFeedsModel:
+    def get_user_feeds(self, input_model: UserModel, posts_num: int = 5) -> GetUserFeedsModel:
         results = asyncio.run(self._get_data(input_model))
         feeds = []
-        # last 5 feeds
-        for feed in results[0][:5]:
+        # last 5 feeds default
+        for feed in results[0][:posts_num]:
             feed_model = FeedModel(
                 user_id=input_model.user_id,
                 title=feed['title'],
@@ -55,15 +57,14 @@ class FeedLogic:
         return GetUserFeedsModel(user_feeds=feeds)
 
     @atomic
-    def bookmark_feed(self, input_model: BookmarkModel):
+    def bookmark_feed(self, input_model: BookmarkModel) -> BookmarkModel:
         if self.repository.get_bookmark(input_model) is not None:
             raise HTTPException(status_code=409, detail="this feed is bookmarked!")
         if self.repository.get_user_by_id(input_model) is None:
-            raise HTTPException(status_code=409, detail="this user_id does not exist")
+            raise HTTPException(status_code=404, detail="this user_id does not exist")
         if self.repository.get_feed(input_model) is None:
-            raise HTTPException(status_code=409, detail="this feed_id does not exist")
-        bookmark = self.repository.create_bookmark(input_model)
-        return {"bookmark_id": bookmark.bookmark_id}
+            raise HTTPException(status_code=404, detail="this feed_id does not exist")
+        return self.repository.create_bookmark(input_model)
 
     @atomic
     def add_user_source(self, input_model: SourceModel) -> SourceModel:
@@ -84,4 +85,5 @@ if __name__ == "__main__":
     #     'https://joelhooks.com/rss.xml',
     #     'https://swyx.io/rss.xml',
     #     'http://feeds.arstechnica.com/arstechnica/index/'
+    #     'https://news.ycombinator.com/rss'
     # ]
