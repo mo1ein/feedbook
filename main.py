@@ -91,7 +91,5 @@ def serve():
 
 if __name__ == '__main__':
     from src.utils.configs import Configuration, BaseFastAPIConfig
-
-    # fix dotenv...
     Configuration.apply(RuntimeConfig, alternative_env_search_dir=__file__)
     serve()
