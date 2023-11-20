@@ -23,14 +23,13 @@ def test_get_user_feeds():
     expected = GetUserFeedsModel(
         user_feeds=[
             FeedModel(
-                feed_id="0bced263-a068-4eb5-97cf-294c6284d20f",
+                feed_id="12be95b4-dd52-4678-813c-1449dee0876e",
                 user_id="680813d9-ecec-4a60-970d-d34af9e398a6",
                 title="Heroicons",
                 link="https://waylonwalker.com//thoughts-161",
                 summary="Here heroicons is a really nice set of many of the basic icons that you will need for building nice ui This post was a thought by",
-                author="Waylon Walker",
                 published="2023-11-14",
-                created_at="2023-11-19 22:30:38.248052"
+                created_at="2023-11-20 01:33:09.462111"
             ),
             FeedModel(
                 feed_id="0a694362-4d55-4e37-94be-2b6c95507a9b",
@@ -38,10 +37,10 @@ def test_get_user_feeds():
                 title="Uptime Kuma",
                 link="https://waylonwalker.com//thoughts-160",
                 summary="Here Uptime kuma is a fantastic self hosted monitoring tool.  One docker run command and you are up and running.  Once you are in you have full control over che",
-                author="Waylon Walker",
                 published="2023-11-11",
                 created_at="2023-11-19 22:30:38.248052"
             ),
+
         ]
     )
     output = feed_logic.get_user_feeds(user_model, posts_num=2)

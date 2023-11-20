@@ -15,7 +15,7 @@ def test_login():
     # email or password is wrong
     login_model = LoginInputModel(email='akbar@gmail.com', password='9090ak@oOk$')
     try:
-        output = auth_logic.login(login_model)
+        auth_logic.login(login_model)
     except HTTPException:
         assert True
 
