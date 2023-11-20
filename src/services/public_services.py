@@ -26,5 +26,3 @@ def register(input_model: RegisterInputModel) -> RegisterOutputModel:
 )
 def login(input_model: LoginInputModel) -> LoginOutputModel:
     return AuthLogic().login(input_model)
-
-# TODO: refresh_token
