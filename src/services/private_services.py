@@ -1,8 +1,13 @@
 from fastapi import status, APIRouter
 
 from src.logics.feed import FeedLogic
-from src.models.feed_model import GetUserFeedsModel, GetUserSourcesModel, SourceModel, BookmarkModel, \
-    GetUserBookmarksModel
+from src.models.feed_model import (
+    GetUserFeedsModel,
+    GetUserSourcesModel,
+    SourceModel,
+    BookmarkModel
+)
+
 from src.models.service_enum import ServiceType
 from src.models.user_model import UserModel
 
@@ -55,10 +60,10 @@ def get_user_bookmarks(user_id: str) -> GetUserFeedsModel:
 
 @private_routes.post(
     "/users/{user_id}/bookmark",
-    response_model=dict,
+    response_model=BookmarkModel,
     tags=[ServiceType.FEED_API],
     status_code=status.HTTP_201_CREATED
 )
-def bookmark_feed(user_id: str, feed_id: str) -> dict:
+def bookmark_feed(user_id: str, feed_id: str) -> BookmarkModel:
     bookmark_model = BookmarkModel(user_id=user_id, feed_id=feed_id)
     return FeedLogic().bookmark_feed(bookmark_model)
