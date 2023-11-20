@@ -1,8 +1,13 @@
 from sqlalchemy import select, and_
 
 from src.models.entities import UserEntity, SourceEntity, FeedEntity, BookmarkEntity
-from src.models.feed_model import GetUserSourcesModel, SourceModel, FeedModel, BookmarkModel, GetUserBookmarksModel, \
+from src.models.feed_model import (
+    GetUserSourcesModel,
+    SourceModel,
+    FeedModel,
+    BookmarkModel,
     GetUserFeedsModel
+)
 from src.models.user_model import UserModel
 from src.utils.orm.sqlalchemy_adapter import SqlAlchemyAdapter
 
@@ -29,7 +34,6 @@ class PostgresAdapter(SqlAlchemyAdapter):
         return UserModel.model_validate(user_entity)
 
     def get_user_sources(self, input_model: UserModel) -> GetUserSourcesModel | None:
-        # TODO: fix none its handle with empty list
         query = select(SourceEntity).where(SourceEntity.user_id == input_model.user_id)
         if (source_entities := self.scalars(query).all()) is None:
             return None
@@ -63,7 +67,6 @@ class PostgresAdapter(SqlAlchemyAdapter):
                 FeedEntity.title == input_model.title,
                 FeedEntity.link == input_model.link,
                 FeedEntity.summary == input_model.summary,
-                FeedEntity.author == input_model.author,
                 FeedEntity.published == input_model.published
             )
         )
