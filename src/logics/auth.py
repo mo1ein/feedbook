@@ -1,14 +1,20 @@
 from fastapi import HTTPException, status
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 
-from src.models.auth_model import RegisterInputModel, RegisterOutputModel, LoginInputModel, LoginOutputModel, \
-    VerifyAccessTokenInputModel, VerifyAccessTokenOutputModel
+from src.models.auth_model import (
+    RegisterInputModel,
+    RegisterOutputModel,
+    LoginInputModel,
+    LoginOutputModel,
+    VerifyAccessTokenInputModel,
+    VerifyAccessTokenOutputModel
+)
 from src.models.user_model import UserModel
 
 from src.repositories.repository import Repository
 from src.utils import token
+from src.utils.configs import AuthConfigs
 from src.utils.decorators.atomic import atomic
-from src.utils.settings import settings
 from src.utils.token import decode_jwt_token
 
 
@@ -29,14 +35,14 @@ class AuthLogic:
         access_token = token.generate_jwt_token(
             identity=str(user_data.user_id),
             token_type="access",
-            lifetime=settings.ACCESS_TOKEN_EXPIRE,
+            lifetime=AuthConfigs.ACCESS_TOKEN_EXPIRE,
             claims=None,
             headers=None
         )
         refresh_token = token.generate_jwt_token(
             identity=str(user_data.user_id),
             token_type="refresh",
-            lifetime=settings.REFRESH_TOKEN_EXPIRE,
+            lifetime=AuthConfigs.REFRESH_TOKEN_EXPIRE,
             claims=None,
             headers=None
         )
@@ -52,12 +58,16 @@ class AuthLogic:
     @atomic
     def register(self, input_model: RegisterInputModel) -> RegisterOutputModel:
         # forwarded_for, user_agent = get_auth_headers()
-
-        user_model = UserModel(email=input_model.email, password=input_model.password)
+        user_model = UserModel(
+            name=input_model.name,
+            last_name=input_model.last_name,
+            email=input_model.email,
+            password=input_model.password,
+            is_active=True
+        )
         user = self.repository.get_user_by_email(user_model)
         if user:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='User already exists')
-        user_model.is_active = True
         created_user = self.repository.create_user(user_model)
 
         # TODO: fix this in function...
@@ -65,14 +75,14 @@ class AuthLogic:
         access_token = token.generate_jwt_token(
             identity=str(created_user.user_id),
             token_type="access",
-            lifetime=settings.ACCESS_TOKEN_EXPIRE,
+            lifetime=AuthConfigs.ACCESS_TOKEN_EXPIRE,
             claims=None,
             headers=None
         )
         refresh_token = token.generate_jwt_token(
             identity=str(created_user.user_id),
             token_type="refresh",
-            lifetime=settings.REFRESH_TOKEN_EXPIRE,
+            lifetime=AuthConfigs.REFRESH_TOKEN_EXPIRE,
             claims=None,
             headers=None
         )
