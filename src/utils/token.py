@@ -4,13 +4,12 @@ from typing import Dict, Any, Union
 
 import jwt
 from pydantic import SecretStr
-
-from src.utils import settings
+from src.utils.configs import AuthConfigs
 
 SecretType = Union[str, SecretStr]
 JWT_ALGORITHM = "HS256"
 
-jwt_secret_key = settings.settings.JWT_SECRET_KEY
+jwt_secret_key = AuthConfigs.JWT_SECRET_KEY
 
 
 def _get_secret(secret: SecretType) -> SecretType:
