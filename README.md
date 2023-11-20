@@ -61,4 +61,4 @@ cd feedbook
 docker compose build
 docker compose up -d
 ```
-Then, enjoy the app! [http://127.0.0.1:8500/docs#/](http://127.0.0.1:8500/docs#/)
+Then, enjoy the app! <br />[http://127.0.0.1:8500/docs#/](http://127.0.0.1:8500/docs#/)
