@@ -3,20 +3,18 @@ import logging
 from src.utils.base_utils import BaseUtils
 import os
 from typing import Any, Type
+import secrets
 
 
 class BaseOrmConfig:
-    # fix
     ORM_DATABASE: str = "postgres"
     ORM_ECHO: bool = False
     ORM_ECHO_POOL: bool = False
     ORM_ENABLE_FROM_LINTING: bool = True
     ORM_HIDE_PARAMETERS: bool = False
-    #fix
     ORM_HOST: str = "feedbook_db"
     # ORM_HOST: str = "localhost"
     ORM_ISOLATION_LEVEL: str = "SERIALIZABLE"
-    #fix
     ORM_PASSWORD: str = "postgres"
     ORM_POLL_MAX_OVERFLOW: int = 1
     ORM_POOL_PRE_PING: bool = True
@@ -27,7 +25,6 @@ class BaseOrmConfig:
     ORM_POOL_USE_LIFO: bool = True
     ORM_PORT: int = 5432
     ORM_QUERY_CACHE_SIZE: int = 500
-    #fix
     ORM_USERNAME: str = "postgres"
 
 
@@ -49,6 +46,13 @@ class BaseFastAPIConfig:
     FASTAPI_WS_PER_MESSAGE_DEFLATE: bool = True
     FASTAPI_WS_PING_INTERVAL: float = 20.0
     FASTAPI_WS_PING_TIMEOUT: float = 20.0
+
+
+class AuthConfigs:
+    SECRET_KEY: str = secrets.token_urlsafe(32)
+    JWT_SECRET_KEY: str = secrets.token_urlsafe(32)
+    ACCESS_TOKEN_EXPIRE: int = 60 * 15
+    REFRESH_TOKEN_EXPIRE: int = 60 * 60 * 24 * 30
 
 
 class BaseConfig(BaseOrmConfig, BaseFastAPIConfig):
