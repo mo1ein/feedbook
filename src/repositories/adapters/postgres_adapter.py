@@ -41,9 +41,17 @@ class PostgresAdapter(SqlAlchemyAdapter):
         return GetUserSourcesModel(user_sources=response_model)
 
     def create_source(self, input_model: SourceModel) -> SourceModel:
-        source = SourceEntity(**input_model.model_dump(exclude_unset=True, exclude_none=True))
-        source_entity = self.create(source, return_data=True)
-        return SourceModel.model_validate(source_entity)
+        query = select(SourceEntity).where(
+            and_(
+                SourceEntity.user_id==input_model.user_id,
+                SourceEntity.link == input_model.link
+            )
+        )
+        if (query_response := self.execute(query).scalar()) is None:
+            source = SourceEntity(**input_model.model_dump(exclude_unset=True, exclude_none=True))
+            source_entity = self.create(source, return_data=True)
+            return SourceModel.model_validate(source_entity)
+        return SourceModel.model_validate(query_response)
 
     def create_feed(self, input_model: FeedModel) -> FeedModel:
         feed = FeedEntity(**input_model.model_dump(exclude_unset=True, exclude_none=True))
