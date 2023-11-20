@@ -69,3 +69,12 @@ def test_add_user_source():
     output = feed_logic.add_user_source(source_model)
     assert expected_link == output.link
     assert expected_user_id == output.user_id
+
+# some urls for test
+# urls = [
+#     'https://waylonwalker.com/rss.xml',
+#     'https://joelhooks.com/rss.xml',
+#     'https://swyx.io/rss.xml',
+#     'http://feeds.arstechnica.com/arstechnica/index/'
+#     'https://news.ycombinator.com/rss'
+# ]
