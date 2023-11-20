@@ -26,7 +26,7 @@ class Repository:
     def get_user_bookmarks(self, input_model: UserModel) -> GetUserFeedsModel:
         return self.postgres_adapter.get_user_bookmarks(input_model)
 
-    def create_bookmark(self, input_model: BookmarkModel):
+    def create_bookmark(self, input_model: BookmarkModel) -> BookmarkModel:
         return self.postgres_adapter.create_bookmark(input_model)
 
     def get_user_feeds(self, input_model: UserModel):
