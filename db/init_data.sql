@@ -25,7 +25,6 @@ CREATE TABLE feed
     link       VARCHAR                         NOT NULL,
     summary    VARCHAR                         NOT NULL,
     author     VARCHAR                         NOT NULL,
--- published type can be datetime or sth...
     published  VARCHAR                         NOT NULL,
     created_at TIMESTAMP(6) WITHOUT TIME ZONE  NOT NULL DEFAULT transaction_timestamp()
 );
@@ -40,11 +39,11 @@ CREATE TABLE bookmark
 );
 
 -- test data
-INSERT INTO public.source (source_id, user_id, link, created_at)
-VALUES ('9945b97d-facd-4968-a152-f5284e720685', '4d43e0a5-2bec-439e-bdf1-bfb1239b767a',
-        'https://waylonwalker.com/rss.xml', '2023-11-19 14:43:52.168588');
-INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at)
-VALUES ('09e68633-5866-478a-a973-ab21142fef85', '4d43e0a5-2bec-439e-bdf1-bfb1239b767a', 'Heroicons',
-        'https://waylonwalker.com//thoughts-161',
-        'Here heroicons is a really nice set of many of the basic icons that you will need for building nice ui This post was a thought by',
-        'Waylon Walker', '2023-11-14', '2023-11-19 18:45:31.068979');
+INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at) VALUES ('0bced263-a068-4eb5-97cf-294c6284d20f', '680813d9-ecec-4a60-970d-d34af9e398a6', 'Heroicons', 'https://waylonwalker.com//thoughts-161', 'Here heroicons is a really nice set of many of the basic icons that you will need for building nice ui This post was a thought by', 'Waylon Walker', '2023-11-14', '2023-11-19 22:30:38.248052');
+INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at) VALUES ('0a694362-4d55-4e37-94be-2b6c95507a9b', '680813d9-ecec-4a60-970d-d34af9e398a6', 'Uptime Kuma', 'https://waylonwalker.com//thoughts-160', 'Here Uptime kuma is a fantastic self hosted monitoring tool.  One docker run command and you are up and running.  Once you are in you have full control over che', 'Waylon Walker', '2023-11-11', '2023-11-19 22:30:38.248052');
+INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at) VALUES ('87e9774e-71d0-4c54-8c12-c07acf396058', '680813d9-ecec-4a60-970d-d34af9e398a6', 'Kv - Command | Vault | Hashicorp Developer', 'https://waylonwalker.com//thoughts-158', 'Here hashi vault lets you manage secrets right from your cli. This post was a thought by', 'Waylon Walker', '2023-11-05', '2023-11-19 22:30:38.248052');
+INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at) VALUES ('52c3b9d2-83f8-4352-9456-8646d5bacbbc', '680813d9-ecec-4a60-970d-d34af9e398a6', 'Johanhaleby/Kubetail: Bash Script To Tail Kubernetes Logs From Multiple Pods At The Same Time', 'https://waylonwalker.com//thoughts-157', 'Here Kubetail is a pretty sick bash script that allows you to tail logs for multiple pods in one stream.  Very handy when you have more than one replica running', 'Waylon Walker', '2023-10-31', '2023-11-19 22:30:38.248052');
+INSERT INTO public.feed (feed_id, user_id, title, link, summary, author, published, created_at) VALUES ('eeea2588-9937-4c1a-9aef-a55c683337d5', '680813d9-ecec-4a60-970d-d34af9e398a6', 'Waylon Walker 🐍 On X: "Which Is More Complicated" / X', 'https://waylonwalker.com//thoughts-155', 'Here Wow, shocked at these results.  All this time I This post was a thought by', 'Waylon Walker', '2023-10-30', '2023-11-19 22:30:38.248052');
+INSERT INTO public.source (source_id, user_id, link, created_at) VALUES ('fc9c3efd-cf90-44c8-9b24-cf5e812be080', '680813d9-ecec-4a60-970d-d34af9e398a6', 'https://waylonwalker.com/rss.xml', '2023-11-19 22:09:58.802881');
+INSERT INTO public.users (user_id, name, last_name, email, password, is_active, created_at) VALUES ('680813d9-ecec-4a60-970d-d34af9e398a6', 'moein', 'halvaei', 'x@x.com', '$pbkdf2-sha256$29000$wPj/XyvFGCOEcE4JAeBcyw$9UYgMqdmkPHATahsA20Eql74Mp6uHGs76F4s3Dy.Syk', true, '2023-11-19 22:07:43.728438');
+INSERT INTO public.bookmark (bookmark_id, feed_id, user_id, created_at, updated_at) VALUES ('e7fde5db-c032-425c-9eb0-633690823b64', '0bced263-a068-4eb5-97cf-294c6284d20f', '680813d9-ecec-4a60-970d-d34af9e398a6', '2023-11-19 22:32:31.986783', null);
