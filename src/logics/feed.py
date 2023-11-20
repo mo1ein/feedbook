@@ -73,16 +73,3 @@ class FeedLogic:
     def get_user_bookmarks(self, input_model: UserModel) -> GetUserFeedsModel:
         return self.repository.get_user_bookmarks(input_model)
 
-
-if __name__ == "__main__":
-    f = FeedLogic()
-    # Configuration.apply(RuntimeConfig, alternative_env_search_dir=__file__)
-    user = UserModel(user_id='4d43e0a5-2bec-439e-bdf1-bfb1239b767a')
-    f.get_user_feeds(user)
-    # urls = [
-    #     'https://waylonwalker.com/rss.xml',
-    #     'https://joelhooks.com/rss.xml',
-    #     'https://swyx.io/rss.xml',
-    #     'http://feeds.arstechnica.com/arstechnica/index/'
-    #     'https://news.ycombinator.com/rss'
-    # ]
