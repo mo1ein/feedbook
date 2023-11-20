@@ -46,7 +46,6 @@ class FeedLogic:
                 title=feed['title'],
                 link=feed['link'],
                 summary=feed['summary'],
-                author=feed['author'],
                 published=feed['published'],
             )
             if (feed_response := self.repository.is_exist_feed(feed_model)) is None:

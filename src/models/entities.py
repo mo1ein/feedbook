@@ -1,4 +1,4 @@
-# TODO add last_name first_name?? username??
+
 import uuid
 from datetime import datetime
 
@@ -17,7 +17,6 @@ class FeedEntity(BaseEntity):
     title = Column(String(), nullable=False)
     link = Column(String(), nullable=False)
     summary = Column(String(), nullable=False)
-    author = Column(String(), nullable=False)
     published = Column(String(), nullable=False)
 
     user = relationship("UserEntity", foreign_keys=[user_id])

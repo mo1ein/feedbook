@@ -22,7 +22,6 @@ class FeedModel(BaseFeedBookModel):
     title: StrictStr | None = None
     link: StrictStr | None = None
     summary: StrictStr | None = None
-    author: StrictStr | None = None
     published: StrictStr | None = None
     created_at: PastDatetime | None = None
 
