@@ -46,10 +46,6 @@ class AuthLogic:
             claims=None,
             headers=None
         )
-
-        # Store refresh token and other metadata in redis
-        # await add_refresh_token_to_redis(redis_client, user, refresh_token, forwarded_for, user_agent, request.fingerprint)
-
         return LoginOutputModel(
             access_token=access_token,
             refresh_token=refresh_token,
@@ -57,7 +53,6 @@ class AuthLogic:
 
     @atomic
     def register(self, input_model: RegisterInputModel) -> RegisterOutputModel:
-        # forwarded_for, user_agent = get_auth_headers()
         user_model = UserModel(
             name=input_model.name,
             last_name=input_model.last_name,
@@ -69,8 +64,6 @@ class AuthLogic:
         if user:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='User already exists')
         created_user = self.repository.create_user(user_model)
-
-        # TODO: fix this in function...
 
         access_token = token.generate_jwt_token(
             identity=str(created_user.user_id),
@@ -86,10 +79,6 @@ class AuthLogic:
             claims=None,
             headers=None
         )
-
-        # Store refresh token and other metadata in redis
-        # await add_refresh_token_to_redis(redis_client, user, refresh_token, forwarded_for, user_agent, request.fingerprint)
-
         return RegisterOutputModel(
             access_token=access_token,
             refresh_token=refresh_token,
